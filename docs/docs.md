@@ -8,13 +8,14 @@ In case of any questions, feel free to ping organizers in Discord or in person!
 ## Table of contents
 1. [Task description](#task)
     1. [Resource market](#resource_market)
-    1. [Power plants](#resource_market)
-    1. [Electricity market](#electricity_market)
+    1. [Power plants](#power_plants)
+    1. [Energy market](#energy_market)
 1. [Ticks](#ticks)
 1. [Rounds and scoring](#games)
 1. [Appendix](#extra)
-    1. [Order matching example](#order_matching)
+    1. [Order matching example](#matching_example)
     1. [Bot orders mechanics](#bot_orders)
+
 
 ## Task description <a name="task"></a>
 
@@ -23,7 +24,7 @@ At the beginning of a game, you are given a sum of money.
 You can buy and sell your resources on *the resource market*.
 Resources can be stored in your storage.
 
-You can also process resources you own and produce electricity using *power plants*. This electricity can be sold on *the electricity market*, but cannot be stored.
+You can also process resources you own and produce energy using *power plants*. This energy can be sold on *the energy market*, but cannot be stored.
 
 The player with the biggest [net worth](#scoring) at the end of the game wins!
 
@@ -81,26 +82,26 @@ Where x is the number of power plants of this type you already own.
 
 Nonrenewable power plants corespond to resources in the game. These are: **coal, uranium, biomass, gas, and oil**.
 
-Nonrenewables require resources to run but produce a lot of stable electricity. You can set how many resources of each type you want to burn per tick. But you cannot burn more resources per tick than power plants of that type that you have. 
+Nonrenewables require resources to run but produce a lot of stable energy. You can set how many resources of each type you want to burn per tick. But you cannot burn more resources per tick than power plants of that type that you have. 
 
 - 1 resource burned per tick = 1 power plant is on.
 
-Power plants are evaluated at the end of the tick, after resource order matching, but before electricity matching. If you don't have required resources, some power plants will automatically shut off.
+Power plants are evaluated at the end of the tick, after resource order matching, but before energy matching. If you don't have required resources, some power plants will automatically shut off.
 
 ### Renewable
 
 Renewable power plants are **geothermal, wind, solar and hydro**. They don't have coresponding resources, but only power plants.
 
-Renewables always produce electricity following the dataset. However, renewables produce less electricity and do it less reliably. You can use modeling to predict how much they will produce since every tick is one hour in the dataset, which means that one day is 24 ticks.
-For example, solar plants will produce more electricity during the daytime.
+Renewables always produce energy following the dataset. However, renewables produce less energy and do it less reliably. You can use modeling to predict how much they will produce since every tick is one hour in the dataset, which means that one day is 24 ticks.
+For example, solar plants will produce more energy during the daytime.
 
-You can see an example of electricity production from one solar plant below.
+You can see an example of energy production from one solar plant below.
 
 <img src="./solar.svg" style="width:480px;height:350px;">
 
 ## Energy market <a name="energy_market"></a>
 
-The energy market is simpler than the resource market. You will set the price for your electricity. Our market will have a certain volume of electricity each tick (electricity demand) and the maximum price at which it will buy electricity. It will look for the cheapest electricity from players and buy as much as it can. If it is not filled, it will look for more. If two players set the same price, we will sell it proportionally to the electricity they have produced.
+The energy market is simpler than the resource market. You will set the price for your energy. Our market will have a certain volume of energy each tick (energy demand) and the maximum price at which it will buy energy. It will look for the cheapest energy from players and buy as much as it can. If it is not filled, it will look for more. If two players set the same price, we will sell it proportionally to the energy they have produced.
 
 ## Ticks <a name="ticks"></a>
 
@@ -112,7 +113,7 @@ At the end of the tick following things happen in this order:
 then matched on the price-time priority
 
 1) Power plants consume a set amount of resources and then
-produces electricity
+produces energy
 
 1) Energy agent buys players energy on price priority
     - If you have energy that is not sold to an energy agent, it is destroyed!
@@ -159,7 +160,7 @@ Value of the power plants you own are evaluated automatically, you do not have t
 
 Value of resources is taken directly from our dataset. It is very similar to the price at which our game bot puts their resources on the market - around 5\%. You do not need to sell your resources, except if you predict that the dataset price will be lower at the end of the game.
 
-## Appendix
+## Appendix <a name="extra"></a>
 
 ### Order matching example <a name="matching_example"></a>
 
