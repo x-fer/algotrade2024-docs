@@ -81,6 +81,7 @@ class AlgotradeApi:
                             params={"team_secret": self.team_secret})
 
     def get_orders(self, restriction=None):
+        """ get orders from ALL players, ex. restriction = all (default), bot, best """
         return requests.get(f"http://{self.URL}/game/{self.game_id}/orders",
                             params={"team_secret": self.team_secret,
                                     "restriction": restriction})
@@ -134,6 +135,10 @@ class AlgotradeApi:
     def get_plants(self):
         return requests.get(f"http://{self.URL}/game/{self.game_id}/player/{self.player_id}/plant/list",
                             params={"team_secret": self.team_secret})
+    
+    def get_plant_prices(self):
+        return requests.get(f"http://{self.URL}/game/{self.game_id}/player/{self.player_id}/plant/list",
+                            params={"team_secret": self.team_secret})
 
     def buy_plant(self, type):
         return requests.post(f"http://{self.URL}/game/{self.game_id}/player/{self.player_id}/plant/buy",
@@ -144,11 +149,12 @@ class AlgotradeApi:
         return requests.post(f"http://{self.URL}/game/{self.game_id}/player/{self.player_id}/plant/sell",
                              params={"team_secret": self.team_secret},
                              json={"type": type})
-
-    def turn_on_plant(self, type, number):
+    
+    def turn_on(self, plant_type, number):
+        """ turn_on(plant_type, 0) turns off all plants of that type """
         return requests.post(f"http://{self.URL}/game/{self.game_id}/player/{self.player_id}/plant/on",
                              params={"team_secret": self.team_secret},
-                             json={"type": type, "number": number})
+                             json={"type": plant_type, "number": number})
 
     def get_dataset(self, start_tick=None, end_tick=None):
         url = f"http://{self.URL}/game/{self.game_id}/dataset"
@@ -159,11 +165,6 @@ class AlgotradeApi:
             params["end_tick"] = end_tick
         return requests.get(url, params=params)
 
-    def get_plant_prices(self):
-        return requests.get(f"http://{self.URL}/game/{self.game_id}/player/{self.player_id}/plant/list",
-                            params={"team_secret": self.team_secret})
+    
 
-    def turn_on(self, plant_type, number):
-        return requests.post(f"http://{self.URL}/game/{self.game_id}/player/{self.player_id}/plant/on",
-                             params={"team_secret": self.team_secret},
-                             json={"type": plant_type, "number": number})
+    

@@ -2,14 +2,13 @@ from time import sleep
 from pprint import pprint
 
 import algotrade_api
-from algotrade_api import AlgotradeApi
+from algotrade_api import AlgotradeApi, PowerPlant
 
 
 # Change this at the start of the competition
 url = "localhost:3000" # Change this
 team_secret = "gogi" # Change this
-game_id = None # we will get this later
-player_id = None # we will get this later
+
 
 api = AlgotradeApi(url, team_secret)
 
@@ -42,10 +41,29 @@ def run_with_inputs():
 
 
 def run_with_params(game_id: str = None, player_id: str = None):
+    # If you want to run the game directly from main, set these parameters
     if game_id is not None:
         api.set_game_id(game_id)
     if player_id is not None:
         api.set_player_id(player_id)
+
+    print("Buying solar power plant")
+    r = api.buy_plant(PowerPlant.SOLAR.value)
+    assert r.status_code == 200, r.text
+
+    print("Turning the power plant on")
+    r = api.turn_on(PowerPlant.SOLAR.value, 1)
+    assert r.status_code == 200, r.text
+
+    print("Set the energy price to 300")
+    r = api.set_energy_price(300)
+    assert r.status_code == 200, r.text
+
+    # Print player stats
+    r = api.get_player()
+    assert r.status_code == 200, r.text
+    pprint(r.json())
+
     while True:
         tick()
         sleep(0.9)
@@ -76,6 +94,7 @@ def tick():
 
         print(f"{player['player_id']} Buying {resource.value} price: {best_price}, size: {best_size}")
 
+        # Create order to buy coal that will expire in 10 ticks
         r = api.create_order(
             resource="coal",
             price=best_price + 100,
