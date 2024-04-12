@@ -6,7 +6,7 @@ from algotrade_api import AlgotradeApi, PowerPlant
 
 
 # Change this at the start of the competition
-url = "localhost:3000" # Change this
+url = "https://algotrade-server.xfer.hr" # Change this
 team_secret = "gogi" # Change this
 
 
@@ -96,7 +96,7 @@ def tick():
 
         # Create order to buy coal that will expire in 10 ticks
         r = api.create_order(
-            resource="coal",
+            resource=resource.value,
             price=best_price + 100,
             size=5,
             side="buy",
