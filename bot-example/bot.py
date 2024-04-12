@@ -2,7 +2,7 @@ from time import sleep
 from pprint import pprint
 
 import algotrade_api
-from algotrade_api import AlgotradeApi, PowerPlant
+from algotrade_api import AlgotradeApi, PowerPlant, Resource
 
 
 # Change this at the start of the competition
@@ -83,7 +83,10 @@ def tick():
     rjson = r.json()
 
     # Buy all resources while you can (not a good bot)
-    for resource in algotrade_api.Resource:
+    for resource in Resource:
+        if (resource.value == Resource.URANIUM.value or 
+            resource.value == Resource.ENERGY.value):
+            continue
         try:
             orders = rjson[resource.value]
             best_order = orders["sell"][0]

@@ -4,12 +4,12 @@ import requests
 
 
 class Resource(Enum):
-    energy = "energy"
-    coal = "coal"
-    uranium = "uranium"
-    biomass = "biomass"
-    gas = "gas"
-    oil = "oil"
+    ENERGY = "energy"
+    COAL = "coal"
+    URANIUM = "uranium"
+    BIOMASS = "biomass"
+    GAS = "gas"
+    OIL = "oil"
 
 
 class PowerPlant(Enum):
